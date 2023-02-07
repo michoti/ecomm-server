@@ -14,20 +14,13 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('products', function (Blueprint $table) {
+        Schema::create('orders', function (Blueprint $table) {
             $table->id();
-            $table->string('title', 2000);
-            $table->string('slug', 2000);
-            $table->string('image', 2000)->nullable();
-            $table->string('image_mime')->nullable();
-            $table->integer('image_size')->nullable();
-            $table->longText('description')->nullable();
-            $table->decimal('price', 10, 2);
+            $table->decimal('total_price', 20, 2);
+            $table->string('status', 45);            
+            $table->timestamps();
             $table->foreignIdFor(User::class, 'created_by')->nullable();
             $table->foreignIdFor(User::class, 'updated_by')->nullable();
-            $table->softDeletes();
-            $table->foreignIdFor(User::class, 'deleted_by')->nullable();
-            $table->timestamps();
         });
     }
 
@@ -38,6 +31,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('products');
+        Schema::dropIfExists('orders');
     }
 };
