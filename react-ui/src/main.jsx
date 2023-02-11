@@ -1,15 +1,20 @@
+import axios from 'axios'
 import React from 'react'
 import ReactDOM from 'react-dom/client'
-import Dashboard from './Dashboard.jsx'
+import { RouterProvider } from 'react-router-dom';
+import router from '../router';
+import { AuthProvider } from './context/AuthContext'
 import './index.css'
-import {RouterProvider} from "react-router-dom";
-import router from "./router.jsx";
-import {ContextProvider} from './context/ContextProvider.jsx'
 
-ReactDOM.createRoot(document.getElementById("root")).render(
+axios.defaults.baseURL = "http://localhost:8000/";
+axios.defaults.headers.post['Content-Type'] = 'application/json';
+axios.defaults.headers.post['Accept'] = 'application/json';
+axios.defaults.withCredentials = true;
+
+ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
-    <ContextProvider>
+    <AuthProvider>
       <RouterProvider router={router} />
-    </ContextProvider>
-  </React.StrictMode>
-);
+    </AuthProvider>
+  </React.StrictMode>,
+)
