@@ -23,6 +23,11 @@ const Home = () => {
       }
 
 
+      // const addToCart = (slug) => {
+      //   axios.post(`api/cart/add/${slug}`).then();
+      // }
+
+
 
   return (
     <>
@@ -35,6 +40,7 @@ const Home = () => {
             <img src={product.image_url} />
             <h5>{product.title}</h5>
             <h5>$ {product.price}</h5>
+            {/* <button>Add to cart</button> */}
           </article>
         ))
       }
