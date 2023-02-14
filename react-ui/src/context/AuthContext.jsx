@@ -5,6 +5,7 @@ const AuthContext = createContext({});
 
 export const AuthProvider = ({ children }) => {
     const [user, setUser] = useState(null);
+    // const [products, setProducts] = useState({});
 
     const getUser = async () => {
         const { data } = await axios.get("/api/user");
@@ -25,6 +26,26 @@ export const AuthProvider = ({ children }) => {
         return parts.pop().split(';').shift();
         }
       };
+
+      // const getProducts = async () => {
+      //   try {
+      //       const response = await axios.get('api/products')
+      //                                   // .then((resp) => resp.json())
+      //                                   .then(({data}) => console.log(data.data));
+      //       return response.data;                            
+      //       // const data = response.reduce((obj, current) => ({...obj, [current.key]: current.value}), {});
+      //       // return data;
+      //       // const response = await axios.get('api/products');
+      //       // return response.data;
+      //   } catch (error) {
+      //       return error.message        
+      //   }
+      // }
+
+      // useEffect(() => {
+      //   const allProducts = getProducts();
+      //   setProducts(allProducts);
+      // },[]);
       
     return (
         <AuthContext.Provider value={{ user, getUser, getCookie, logout}}>

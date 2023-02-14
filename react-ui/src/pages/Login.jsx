@@ -24,7 +24,7 @@ const Login = () => {
               axios.post(`login`, JSON.stringify({ email, password }), config)
                   .then(() =>  {
                     getUser()
-                    navigate("/")
+                    navigate("/home")
                   })
                   .catch((err) => {
                       if (err.response.status === 422) {
