@@ -17,14 +17,14 @@ use Illuminate\Support\Facades\Route;
 */
 Route::middleware(['auth:sanctum'])
     ->group(function () {
-    Route::get('/', [ProductController::class, 'index']);
-    Route::get('/product/{product:slug}', [ProductController::class, 'show']);       
+    Route::get('/products', [ProductController::class, 'index']);
+    Route::post('/product/{product:id}', [ProductController::class, 'show']);       
 });
 
 Route::prefix('/cart')->group(function(){
     Route::get('/', [CartController::class, 'index']);
-    Route::post('/add/{product:slug}', [CartController::class, 'add']);
-    Route::delete('/remove/{product:slug}', [CartController::class, 'remove']);
+    Route::post('/add/{product:id}', [CartController::class, 'add']);
+    Route::delete('/remove/{product:id}', [CartController::class, 'remove']);
     Route::put('/updated-quantity/{product:slug}', [CartController::class, 'updateQuantity']);
 });
 

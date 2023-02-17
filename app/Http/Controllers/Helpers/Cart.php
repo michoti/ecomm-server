@@ -1,7 +1,7 @@
 <?php 
 
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Helpers;
 
 use App\Models\CartItem;
 
@@ -9,7 +9,7 @@ class Cart
 {
     public static function getCartItemsCount(): int
     {
-        $request = \request();
+        $request = request();
         $user = $request->user();
         if($user) {
             return CartItem::where('user_id', $user->id)->sum('quantity');

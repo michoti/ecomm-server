@@ -3,10 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Models\CartItem;
+use App\Http\Controllers\Helpers\Cart;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Cookie;
+// use Illuminate\Support\Facades\Log;
 
 class CartController extends Controller
 {
@@ -55,18 +57,17 @@ class CartController extends Controller
             ]);
         } else {
             $cartItems = json_decode($request->cookie('cart_items', '[]'), true);
+            
             $productFound = false;
+            // $productFound = array_search($product->id, array_column($cartItems, 'product_id'));
+
             foreach ($cartItems as &$item) {
                 if($item['product_id'] === $product->id) {
                     $item['quantity'] += $quantity;
                     $productFound = true;
                     break;
                 }
-            }
-
-            // *
-            // *************************** POSSIBLE ERROR ON PRODUCTFOUND VARIABLE
-            // *
+            }         
 
             if(!$productFound) {
                 $cartItems[] = [
@@ -77,7 +78,10 @@ class CartController extends Controller
                 ];
             }
 
+            
             Cookie::queue('cart_items', json_encode($cartItems), 60 * 24 * 30);
+
+            // Log::debug(Cart::getCartItems());
 
             return response(['count' => Cart::getCountFromItems($cartItems)]);
 
