@@ -1,5 +1,6 @@
 import { createBrowserRouter, Navigate } from "react-router-dom";
 import GuestLayout from "./src/layouts/GuestLayout";
+import Cart from "./src/pages/Cart";
 import Home from "./src/pages/Home";
 
 const router = createBrowserRouter([
@@ -14,6 +15,10 @@ const router = createBrowserRouter([
             {
                 path: '/home',
                 element: <Home />
+            },
+            {
+                path: '/cart',
+                element: <Cart />
             }
         ]
     },

@@ -1,34 +1,16 @@
 import axios from 'axios';
 import { useEffect, useState } from 'react'
+import { useAppContext } from '../context/AppContext';
 
 const Store = () => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [cart, setCart] = useState({
-    total: 0,
-    cartItems: [],
-    cartProducts: [] 
-  });
+  const { cart, getCartItems } = useAppContext();
 
       useEffect(() => {
         getProducts(); 
         cart.total === 0 && getCartItems();       
       },[]);
-
-      const getCartItems = async () => {
-        try {
-          await axios.get('api/cart').then(resp => {
-            setCart({ ...cart, total: resp.data.total});
-            setCart({ ...cart, cartItems: resp.data.cart-items});
-            setCart({ ...cart, cartProducts: resp.data.products});
-          });
-          return null;
-          
-        } catch (error) {
-          return error.message;
-          
-        }
-      }
   
       const getProducts = async () => {
         try {
