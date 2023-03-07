@@ -7,6 +7,7 @@ const Store = () => {
   return (
     <>
       <p>Cart total: <h3>{cart.total}</h3></p>
+      <p>Items in cart: <h3>{cart.cartItemsCount}</h3></p>
 
       { loading && <p>...loading products</p>}
 

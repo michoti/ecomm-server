@@ -28,7 +28,7 @@ class CartController extends Controller
         return response([
             'total' => $total,
             'products' => $products,
-            'cart-items' => $cartItems
+            'items' => $cartItems
         ]);
         
     }
