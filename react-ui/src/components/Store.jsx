@@ -1,37 +1,7 @@
-import axios from 'axios';
-import { useEffect, useState } from 'react'
 import { useAppContext } from '../context/AppContext';
 
-const Store = () => {
-  const [products, setProducts] = useState([]);
-  const [loading, setLoading] = useState(false);
-  const { cart, getCartItems } = useAppContext();
-
-      useEffect(() => {
-        getProducts(); 
-        cart.total === 0 && getCartItems();       
-      },[]);
-  
-      const getProducts = async () => {
-        try {
-            setLoading(true);
-            await axios.get('api/products').then(({data}) => {setLoading(false); console.log(data.data); setProducts(data.data);});
-            return null;
-        } catch (error) {
-            setLoading(false)
-            return error.message        
-        }
-      }
-
-
-      const addToCart = (id) => { 
-        const quantity = 1;      
-        axios.post(`api/cart/add/${id}`, { quantity }).then(resp => console.log(resp)).catch( err => console.error(err));
-        getCartItems();
-        // alert('added')
-
-      }
-
+const Store = () => {  
+  const { cart, addToCart, products, loading } = useAppContext(); 
 
 
   return (
@@ -45,7 +15,7 @@ const Store = () => {
 
         { !loading &&
           products.map( product =>  (
-              <div className="w-full md:w-1/3 xl:w-1/4 p-6 flex flex-col">
+              <div key={product.id} className="w-full md:w-1/3 xl:w-1/4 p-6 flex flex-col">
                   <div onClick={() => addToCart(product.id)}>
                       <img className="hover:grow hover:shadow-lg" src={product.image_url} />
                       <div className="pt-3 flex items-center justify-between">
