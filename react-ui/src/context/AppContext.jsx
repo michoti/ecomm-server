@@ -6,6 +6,7 @@ const AppContext = createContext();
 const AppProvider = ({children}) => {
     const [loading, setLoading] = useState(false);
     const [products, setProducts] = useState([]);
+    const [cartItemsCount, setCartItemsCount] = useState(0);
     const [cart, setCart] = useState({
         total: 0,
         cartItemsCount: 0,
@@ -29,9 +30,7 @@ const AppProvider = ({children}) => {
     const getCartItems = async () => {
         try {
         await axios.get('api/cart').then(resp => {
-            setCart({ ...cart, total: resp.data.total});
-            setCart({ ...cart, cartItems: resp.data.items});
-            setCart({ ...cart, cartProducts: resp.data.products});
+            setCart({ ...cart, total: resp.data.total, cartItems: resp.data.items, cartProducts: resp.data.products });
             console.log(resp);
         });
         return null;
@@ -44,7 +43,7 @@ const AppProvider = ({children}) => {
 
     const addToCart = async (id) => { 
         const quantity = 1;      
-        await axios.post(`api/cart/add/${id}`, { quantity }).then(resp => setCart({ ...cart, cartItemsCount: resp.data.count })).catch( err => console.error(err));
+        await axios.post(`api/cart/add/${id}`, { quantity }).then(resp => { console.log(resp); setCartItemsCount(resp.data.count )}).catch( err => console.error(err));
         getCartItems();   
         // console.log(cart.products)     
     }
@@ -57,6 +56,7 @@ const AppProvider = ({children}) => {
     return (
         <AppContext.Provider value={{
             cart,
+            cartItemsCount,
             addToCart,
             products,
             loading

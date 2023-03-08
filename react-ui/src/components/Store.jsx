@@ -1,4 +1,5 @@
 import { useAppContext } from '../context/AppContext';
+import Navbar from './Navbar';
 
 const Store = () => {  
   const { cart, addToCart, products, loading } = useAppContext(); 
@@ -6,13 +7,11 @@ const Store = () => {
 
   return (
     <>
-      <p>Cart total: <h3>{cart.total}</h3></p>
-      <p>Items in cart: <h3>{cart.cartItemsCount}</h3></p>
-
       { loading && <p>...loading products</p>}
 
       <section className="bg-white py-8">
         <div className="container mx-auto flex items-center flex-wrap pt-4 pb-12">
+          <Navbar />
 
         { !loading &&
           products.map( product =>  (
