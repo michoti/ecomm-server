@@ -9,7 +9,6 @@ const AppProvider = ({children}) => {
     const [cartItemsCount, setCartItemsCount] = useState(0);
     const [cart, setCart] = useState({
         total: 0,
-        cartItemsCount: 0,
         cartItems: {},
         cartProducts: [] 
     });
