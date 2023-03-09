@@ -9,7 +9,7 @@ const AppProvider = ({children}) => {
     const [cartItemsCount, setCartItemsCount] = useState(0);
     const [cart, setCart] = useState({
         total: 0,
-        cartItems: {},
+        cartItems: [],
         cartProducts: [] 
     });
 
@@ -29,7 +29,7 @@ const AppProvider = ({children}) => {
     const getCartItems = async () => {
         try {
         await axios.get('api/cart').then(resp => {
-            setCart({ ...cart, total: resp.data.total, cartItems: resp.data.items, cartProducts: resp.data.products });
+            setCart({ ...cart, total: resp.data.total, cartItems: Object.values(resp.data.items), cartProducts: resp.data.products });
             console.log(resp);
         });
         return null;
