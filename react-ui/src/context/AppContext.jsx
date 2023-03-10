@@ -6,7 +6,6 @@ const AppContext = createContext();
 const AppProvider = ({children}) => {
     const [loading, setLoading] = useState(false);
     const [products, setProducts] = useState([]);
-    const [cartItemsCount, setCartItemsCount] = useState(0);
     const [cart, setCart] = useState({
         total: 0,
         cartItems: [],
@@ -30,7 +29,7 @@ const AppProvider = ({children}) => {
         try {
         await axios.get('api/cart').then(resp => {
             setCart({ ...cart, total: resp.data.total, cartItems: Object.values(resp.data.items), cartProducts: resp.data.products });
-            console.log(resp);
+            // console.log(resp.data);
         });
         return null;
         
@@ -42,9 +41,17 @@ const AppProvider = ({children}) => {
 
     const addToCart = async (id) => { 
         const quantity = 1;      
-        await axios.post(`api/cart/add/${id}`, { quantity }).then(resp => { console.log(resp); setCartItemsCount(resp.data.count )}).catch( err => console.error(err));
-        getCartItems();   
-        // console.log(cart.products)     
+        await axios.post(`api/cart/add/${id}`, { quantity }).then(resp => console.log(resp)).catch( err => console.error(err));
+        getCartItems();      
+    }
+    const updateCartItemQuantity = async (id, quantity) => {      
+        await axios.put(`api/cart/updated-quantity/${id}`, { quantity }).then(resp => console.log(resp)).catch( err => console.error(err));
+        getCartItems();      
+    }
+
+    const removeFromCart = async (id) => {
+        await axios.delete(`api/cart/remove/${id}`).then(resp => console.log(resp)).catch( err => console.error(err));
+        getCartItems();
     }
 
     useEffect(() => {
@@ -55,8 +62,9 @@ const AppProvider = ({children}) => {
     return (
         <AppContext.Provider value={{
             cart,
-            cartItemsCount,
             addToCart,
+            updateCartItemQuantity,
+            removeFromCart,
             products,
             loading
         }}>

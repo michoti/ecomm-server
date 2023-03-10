@@ -28,7 +28,7 @@ Route::prefix('/cart')->group(function(){
     Route::get('/', [CartController::class, 'index']);
     Route::post('/add/{product:id}', [CartController::class, 'add']);
     Route::delete('/remove/{product:id}', [CartController::class, 'remove']);
-    Route::put('/updated-quantity/{product:slug}', [CartController::class, 'updateQuantity']);
+    Route::put('/updated-quantity/{product:id}', [CartController::class, 'updateQuantity']);
 });
 
 Route::middleware(['auth:sanctum'])->get('/user', function (Request $request) {

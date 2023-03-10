@@ -3,7 +3,7 @@ import { Link, Outlet } from 'react-router-dom';
 import { useAppContext } from '../context/AppContext';
 
 function GuestLayout() {
-  const { cartItemsCount } = useAppContext();
+  const { cart } = useAppContext();
   return (
     <>  
       <nav id="header" className="w-full z-30 top-0 py-1">
@@ -47,7 +47,7 @@ function GuestLayout() {
                           <circle cx="17.5" cy="18.5" r="1.5" />
                       </svg>
                       <span class="sr-only">Notifications</span>
-                      <div class="absolute inline-flex items-center justify-center w-6 h-6 text-xs font-bold text-white bg-red-500 rounded-full -top-2 -right-2 dark:border-gray-900">{ cartItemsCount }</div>
+                      <div class="absolute inline-flex items-center justify-center w-6 h-6 text-xs font-bold text-white bg-red-500 rounded-full -top-2 -right-2 dark:border-gray-900">{ cart.cartItems.length }</div>
                     </button>
                 </Link>
 
