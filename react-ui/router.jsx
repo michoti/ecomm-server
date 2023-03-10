@@ -1,7 +1,9 @@
 import { createBrowserRouter, Navigate } from "react-router-dom";
 import GuestLayout from "./src/layouts/GuestLayout";
+import SignUp from "./src/pages/SignUp";
 import Cart from "./src/pages/Cart";
 import Home from "./src/pages/Home";
+import SignIn from "./src/pages/SignIn";
 
 const router = createBrowserRouter([
     {
@@ -15,6 +17,14 @@ const router = createBrowserRouter([
             {
                 path: '/home',
                 element: <Home />
+            },
+            {
+                path: '/signup',
+                element: <SignUp />
+            },
+            {
+                path: '/signin',
+                element: <SignIn />
             },
             {
                 path: '/cart',
