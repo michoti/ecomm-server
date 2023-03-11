@@ -4,6 +4,7 @@ import { createContext, useContext, useEffect, useState } from "react";
 const AppContext = createContext();
 
 const AppProvider = ({children}) => {
+    const [user, setUser] = useState(null);
     const [loading, setLoading] = useState(false);
     const [products, setProducts] = useState([]);
     const [cart, setCart] = useState({

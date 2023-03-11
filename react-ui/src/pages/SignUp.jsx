@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 
 const SignUp = () => {
   return (
-    <div className="min-w-screen min-h-screen flex items-center justify-center px-5 py-5">
+    <div className="min-w-screen min-h-screen flex items-center justify-center px-5 py-2">
     <div className="bg-gray-100 text-gray-500 rounded-3xl shadow-xl w-full overflow-hidden max-w-5xl">
         <div className="md:flex w-full">
             <div className="hidden md:block w-1/2 bg-indigo-500 py-10 px-10">
@@ -53,7 +53,7 @@ const SignUp = () => {
                     </div>
                     <div className="flex -mx-3">
                         <div className="w-full px-3 mb-12">
-                            <p>Already have an account? <Link to="/signin" >SignIn here</Link></p>
+                            <p>Already have an account? <Link to="/signin" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">SignIn here</Link></p>
                         </div>
                     </div>
                     <div className="flex -mx-3">
