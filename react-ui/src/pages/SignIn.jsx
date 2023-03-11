@@ -1,7 +1,38 @@
-import React from 'react'
-import { Link } from 'react-router-dom';
+import axios from 'axios';
+import React, { useState } from 'react'
+import { Link, useNavigate } from 'react-router-dom';
+import { useAppContext } from '../context/AppContext';
 
 const SignIn = () => {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [errors, setErrors] = useState([]);
+  const { getUser, getCookie } = useAppContext();
+  const navigate = useNavigate();
+
+    const handleLogin = async (event) => {
+        event.preventDefault();
+                await axios.get('/sanctum/csrf-cookie').then(response => {
+                const csrfToken = getCookie('XSRF-TOKEN');
+                // console.log(decodeURIComponent(csrfToken));
+                const config = {
+                    "headers" : {
+                        'X-XSRF-TOKEN': decodeURIComponent(csrfToken),
+                    }
+                };
+
+                axios.post(`login`, JSON.stringify({ email, password }), config)
+                    .then(() =>  {
+                        getUser()
+                        navigate("/")
+                    })
+                    .catch((err) => {
+                        if (err.response.status === 422) {
+                            setErrors(err.response.data.errors);
+                        }
+                    });
+                });
+    };
   return (
     <div className="min-w-screen min-h-screen flex items-center justify-center px-5 py-2">
     <div className="bg-gray-100 text-gray-500 rounded-3xl shadow-xl w-full overflow-hidden max-w-5xl">
@@ -14,36 +45,52 @@ const SignIn = () => {
                     <h1 className="font-bold text-3xl text-gray-900">Login</h1>
                     <p>Enter your information to signin</p>
                 </div>
-                <div>
-                    <div className="flex -mx-3">
-                        <div className="w-full px-3 mb-5">
-                            <label for="" className="text-xs font-semibold px-1">Email</label>
-                            <div className="flex">
-                                <div className="w-10 z-10 pl-1 text-center pointer-events-none flex items-center justify-center"><i className="mdi mdi-email-outline text-gray-400 text-lg"></i></div>
-                                <input type="email" className="w-full -ml-10 pl-10 pr-3 py-2 rounded-lg border-2 border-gray-200 outline-none focus:border-indigo-500" placeholder="johnsmith@example.com" />
+                <form onSubmit={handleLogin}>
+                    <div>
+                        <div className="flex -mx-3">
+                            <div className="w-full px-3 mb-5">
+                                <label for="" className="text-xs font-semibold px-1">Email</label>
+                                <div className="flex">
+                                    <div className="w-10 z-10 pl-1 text-center pointer-events-none flex items-center justify-center"><i className="mdi mdi-email-outline text-gray-400 text-lg"></i></div>
+                                    <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} className="w-full -ml-10 pl-10 pr-3 py-2 rounded-lg border-2 border-gray-200 outline-none focus:border-indigo-500" placeholder="johnsmith@example.com" />
+                                </div>
+                            </div>
+                            {errors.email && (
+                                <div className="flex">
+                                <span className="text-red-400 text-sm m-2 p-2">
+                                    {errors.email[0]}
+                                </span>
+                                </div>
+                            )}
+                        </div>
+                        <div className="flex -mx-3">
+                            <div className="w-full px-3 mb-12">
+                                <label for="" className="text-xs font-semibold px-1">Password</label>
+                                <div className="flex">
+                                    <div className="w-10 z-10 pl-1 text-center pointer-events-none flex items-center justify-center"><i className="mdi mdi-lock-outline text-gray-400 text-lg"></i></div>
+                                    <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} className="w-full -ml-10 pl-10 pr-3 py-2 rounded-lg border-2 border-gray-200 outline-none focus:border-indigo-500" placeholder="************" />
+                                </div>
+                            </div>
+                            {errors.password && (
+                                <div className="flex">
+                                <span className="text-red-400 text-sm m-2 p-2">
+                                    {errors.password[0]}
+                                </span>
+                                </div>
+                            )}
+                        </div>
+                        <div className="flex -mx-3">
+                            <div className="w-full px-3 mb-12">
+                                <p>Don't have an account? <Link to="/signup" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">SignUp here</Link></p>
+                            </div>
+                        </div>
+                        <div className="flex -mx-3">
+                            <div className="w-full px-3 mb-5">
+                                <button className="block w-full max-w-xs mx-auto bg-indigo-500 hover:bg-indigo-700 focus:bg-indigo-700 text-white rounded-lg px-3 py-3 font-semibold">Login</button>
                             </div>
                         </div>
                     </div>
-                    <div className="flex -mx-3">
-                        <div className="w-full px-3 mb-12">
-                            <label for="" className="text-xs font-semibold px-1">Password</label>
-                            <div className="flex">
-                                <div className="w-10 z-10 pl-1 text-center pointer-events-none flex items-center justify-center"><i className="mdi mdi-lock-outline text-gray-400 text-lg"></i></div>
-                                <input type="password" className="w-full -ml-10 pl-10 pr-3 py-2 rounded-lg border-2 border-gray-200 outline-none focus:border-indigo-500" placeholder="************" />
-                            </div>
-                        </div>
-                    </div>
-                    <div className="flex -mx-3">
-                        <div className="w-full px-3 mb-12">
-                            <p>Don't have an account? <Link to="/signup" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">SignUp here</Link></p>
-                        </div>
-                    </div>
-                    <div className="flex -mx-3">
-                        <div className="w-full px-3 mb-5">
-                            <button className="block w-full max-w-xs mx-auto bg-indigo-500 hover:bg-indigo-700 focus:bg-indigo-700 text-white rounded-lg px-3 py-3 font-semibold">Login</button>
-                        </div>
-                    </div>
-                </div>
+                </form>
             </div>
         </div>
     </div>

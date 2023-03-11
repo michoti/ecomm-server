@@ -13,6 +13,20 @@ const AppProvider = ({children}) => {
         cartProducts: [] 
     });
 
+    const getUser = async () => {
+    const { data } = await axios.get("/api/user");
+        setUser(data);
+        console.log(data)
+    };
+
+    const getCookie = (name) => {
+        const value = `; ${document.cookie}`;
+        const parts = value.split(`; ${name}=`);
+
+        if (parts.length === 2) {
+        return parts.pop().split(';').shift();
+        }
+    };
 
     const getProducts = async () => {
         try {
@@ -62,6 +76,9 @@ const AppProvider = ({children}) => {
 
     return (
         <AppContext.Provider value={{
+            user,
+            getUser,
+            getCookie,
             cart,
             addToCart,
             updateCartItemQuantity,

@@ -1,7 +1,32 @@
-import React from 'react'
-import { Link } from 'react-router-dom';
+import axios from 'axios';
+import React, { useState } from 'react'
+import { Link, useNavigate } from 'react-router-dom';
 
 const SignUp = () => {
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [password_confirmation, setPasswordConfirmation] = useState("");
+  const [errors, setErrors] = useState([]);
+  const navigate = useNavigate();
+
+    const handleRegister = async (event) => {
+        event.preventDefault();
+            setErrors([]);               
+                
+            await axios.get('/sanctum/csrf-cookie').then(response => {
+                axios.post(`register`,
+                    JSON.stringify({name, email, password, password_confirmation }))
+                    .then(() =>  navigate("/"))
+                    .catch((err) => {
+                        if (err.response.status === 422) {
+                            setErrors(err.response.data.errors);
+                        }
+                });
+            });
+
+    };
+
   return (
     <div className="min-w-screen min-h-screen flex items-center justify-center px-5 py-2">
     <div className="bg-gray-100 text-gray-500 rounded-3xl shadow-xl w-full overflow-hidden max-w-5xl">
@@ -14,54 +39,78 @@ const SignUp = () => {
                     <h1 className="font-bold text-3xl text-gray-900">REGISTER</h1>
                     <p>Enter your information to register</p>
                 </div>
-                <div>
-                    <div className="flex -mx-3">
-                        <div className="w-full px-3 mb-5">
-                            <label for="" className="text-xs font-semibold px-1">Username</label>
-                            <div className="flex">
-                                <div className="w-10 z-10 pl-1 text-center pointer-events-none flex items-center justify-center"><i className="mdi mdi-account-outline text-gray-400 text-lg"></i></div>
-                                <input type="text" className="w-full -ml-10 pl-10 pr-3 py-2 rounded-lg border-2 border-gray-200 outline-none focus:border-indigo-500" placeholder="John" />
+                <form onSubmit={handleRegister}>
+                    <div>
+                        <div className="flex -mx-3">
+                            <div className="w-full px-3 mb-5">
+                                <label for="" className="text-xs font-semibold px-1">Username</label>
+                                <div className="flex">
+                                    <div className="w-10 z-10 pl-1 text-center pointer-events-none flex items-center justify-center"><i className="mdi mdi-account-outline text-gray-400 text-lg"></i></div>
+                                    <input type="text" value={ name } onChange={(e) => setName(e.target.value)} className="w-full -ml-10 pl-10 pr-3 py-2 rounded-lg border-2 border-gray-200 outline-none focus:border-indigo-500" placeholder="John" required />
+                                </div>
+                            </div>
+                            {errors.name && (
+                                <div className="flex">
+                                <span className="text-red-400 text-sm m-2 p-2">
+                                    {errors.name[0]}
+                                </span>
+                                </div>
+                            )}
+                        </div>
+                        <div className="flex -mx-3">
+                            <div className="w-full px-3 mb-5">
+                                <label for="" className="text-xs font-semibold px-1">Email</label>
+                                <div className="flex">
+                                    <div className="w-10 z-10 pl-1 text-center pointer-events-none flex items-center justify-center"><i className="mdi mdi-email-outline text-gray-400 text-lg"></i></div>
+                                    <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} className="w-full -ml-10 pl-10 pr-3 py-2 rounded-lg border-2 border-gray-200 outline-none focus:border-indigo-500" placeholder="johnsmith@example.com" required />
+                                </div>
+                            </div>
+                            {errors.email && (
+                                <div className="flex">
+                                <span className="text-red-400 text-sm m-2 p-2">
+                                    {errors.email[0]}
+                                </span>
+                                </div>
+                            )}
+                        </div>
+                        <div className="flex -mx-3">
+                            <div className="w-full px-3 mb-12">
+                                <label for="" className="text-xs font-semibold px-1">Password</label>
+                                <div className="flex">
+                                    <div className="w-10 z-10 pl-1 text-center pointer-events-none flex items-center justify-center"><i className="mdi mdi-lock-outline text-gray-400 text-lg"></i></div>
+                                    <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} className="w-full -ml-10 pl-10 pr-3 py-2 rounded-lg border-2 border-gray-200 outline-none focus:border-indigo-500" placeholder="************" required />
+                                </div>
+                            </div>
+                            {errors.password && (
+                                <div className="flex">
+                                <span className="text-red-400 text-sm m-2 p-2">
+                                    {errors.password[0]}
+                                </span>
+                                </div>
+                            )}
+                        </div>
+                        <div className="flex -mx-3">
+                            <div className="w-full px-3 mb-12">
+                                <label for="" className="text-xs font-semibold px-1">Confirm password</label>
+                                <div className="flex">
+                                    <div className="w-10 z-10 pl-1 text-center pointer-events-none flex items-center justify-center"><i className="mdi mdi-lock-outline text-gray-400 text-lg"></i></div>
+                                    <input type="password" value={password_confirmation} onChange={(e) => setPasswordConfirmation(e.target.value)} className="w-full -ml-10 pl-10 pr-3 py-2 rounded-lg border-2 border-gray-200 outline-none focus:border-indigo-500" placeholder="************" required />
+                                </div>
+                            </div>
+                        </div>
+                        <div className="flex -mx-3">
+                            <div className="w-full px-3 mb-12">
+                                <p>Already have an account? <Link to="/signin" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">SignIn here</Link></p>
+                            </div>
+                        </div>
+                        <div className="flex -mx-3">
+                            <div className="w-full px-3 mb-5">
+                                <button className="block w-full max-w-xs mx-auto bg-indigo-500 hover:bg-indigo-700 focus:bg-indigo-700 text-white rounded-lg px-3 py-3 font-semibold">REGISTER NOW</button>
                             </div>
                         </div>
                     </div>
-                    <div className="flex -mx-3">
-                        <div className="w-full px-3 mb-5">
-                            <label for="" className="text-xs font-semibold px-1">Email</label>
-                            <div className="flex">
-                                <div className="w-10 z-10 pl-1 text-center pointer-events-none flex items-center justify-center"><i className="mdi mdi-email-outline text-gray-400 text-lg"></i></div>
-                                <input type="email" className="w-full -ml-10 pl-10 pr-3 py-2 rounded-lg border-2 border-gray-200 outline-none focus:border-indigo-500" placeholder="johnsmith@example.com" />
-                            </div>
-                        </div>
-                    </div>
-                    <div className="flex -mx-3">
-                        <div className="w-full px-3 mb-12">
-                            <label for="" className="text-xs font-semibold px-1">Password</label>
-                            <div className="flex">
-                                <div className="w-10 z-10 pl-1 text-center pointer-events-none flex items-center justify-center"><i className="mdi mdi-lock-outline text-gray-400 text-lg"></i></div>
-                                <input type="password" className="w-full -ml-10 pl-10 pr-3 py-2 rounded-lg border-2 border-gray-200 outline-none focus:border-indigo-500" placeholder="************" />
-                            </div>
-                        </div>
-                    </div>
-                    <div className="flex -mx-3">
-                        <div className="w-full px-3 mb-12">
-                            <label for="" className="text-xs font-semibold px-1">Confirm password</label>
-                            <div className="flex">
-                                <div className="w-10 z-10 pl-1 text-center pointer-events-none flex items-center justify-center"><i className="mdi mdi-lock-outline text-gray-400 text-lg"></i></div>
-                                <input type="password" className="w-full -ml-10 pl-10 pr-3 py-2 rounded-lg border-2 border-gray-200 outline-none focus:border-indigo-500" placeholder="************" />
-                            </div>
-                        </div>
-                    </div>
-                    <div className="flex -mx-3">
-                        <div className="w-full px-3 mb-12">
-                            <p>Already have an account? <Link to="/signin" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">SignIn here</Link></p>
-                        </div>
-                    </div>
-                    <div className="flex -mx-3">
-                        <div className="w-full px-3 mb-5">
-                            <button className="block w-full max-w-xs mx-auto bg-indigo-500 hover:bg-indigo-700 focus:bg-indigo-700 text-white rounded-lg px-3 py-3 font-semibold">REGISTER NOW</button>
-                        </div>
-                    </div>
-                </div>
+                </form>
+
             </div>
         </div>
     </div>

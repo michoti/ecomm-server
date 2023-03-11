@@ -1,3 +1,4 @@
+import { Spinner } from 'flowbite-react';
 import { useAppContext } from '../context/AppContext';
 import Navbar from './Navbar';
 
@@ -7,15 +8,16 @@ const Store = () => {
 
   return (
     <>
-      { loading && <p>...loading products</p>}
+      
 
       <section className="bg-white py-8">
         <div className="container mx-auto flex items-center flex-wrap pt-4 pb-12">
           <Navbar />
+          { loading && <div className="w-full flex items-center justify-center"><Spinner aria-label="Default status example" size="xl"></Spinner></div>}
 
         { !loading &&
           products.map( product =>  (
-              <div key={product.id} className="w-full md:w-1/3 xl:w-1/4 p-6 flex flex-col">
+              <div key={product.id} className="w-full md:w-1/3 xl:w-1/4 p-6 flex flex-col items-center">
                   <div onClick={() => addToCart(product.id)}>
                       <img className="hover:grow hover:shadow-lg" src={product.image_url} />
                       <div className="pt-3 flex items-center justify-between">
