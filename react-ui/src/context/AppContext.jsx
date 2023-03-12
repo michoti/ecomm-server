@@ -28,6 +28,12 @@ const AppProvider = ({children}) => {
         }
     };
 
+    const logout = () => {
+    axios.post("/logout").then(() => {
+    setUser(null);
+    });
+    };
+
     const getProducts = async () => {
         try {
             setLoading(true);
@@ -79,6 +85,7 @@ const AppProvider = ({children}) => {
             user,
             getUser,
             getCookie,
+            logout,
             cart,
             addToCart,
             updateCartItemQuantity,

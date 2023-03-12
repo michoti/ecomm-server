@@ -1,8 +1,11 @@
 import { useState } from 'react';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import LogoutIcon from '@mui/icons-material/Logout';
+import { useAppContext } from '../context/AppContext';
 
 const Dropdown = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const { logout } = useAppContext();
 
   const toggleDropdown = () => {
     setIsOpen(!isOpen);
@@ -23,7 +26,7 @@ const Dropdown = () => {
 
       {isOpen && (
         <div
-          className="origin-top-right absolute right-0 mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none"
+          className="origin-top-right absolute z-50 right-0 mt-3 w-40 rounded-lg shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none"
           role="menu"
           aria-orientation="vertical"
           aria-labelledby="menu-button"
@@ -48,15 +51,15 @@ const Dropdown = () => {
             >
               Option 2
             </a>
-            <a
-              href="#"
+            <button
+              onClick={ logout }
               className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900"
               role="menuitem"
               tabIndex="-1"
               id="menu-item-2"
             >
-              Option 3
-            </a>
+              SignOut <LogoutIcon />
+            </button>
           </div>
         </div>
       )}
@@ -65,3 +68,4 @@ const Dropdown = () => {
 }
 
 export default Dropdown;
+
