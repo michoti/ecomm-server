@@ -17,7 +17,7 @@ const SignUp = () => {
             await axios.get('/sanctum/csrf-cookie').then(response => {
                 axios.post(`register`,
                     JSON.stringify({name, email, password, password_confirmation }))
-                    .then(() =>  navigate("/"))
+                    .then((resp) =>  console.log(resp))
                     .catch((err) => {
                         if (err.response.status === 422) {
                             setErrors(err.response.data.errors);

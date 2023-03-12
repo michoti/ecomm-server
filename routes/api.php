@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\Route;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
-Route::middleware(['GuestOrVerified'])
+Route::middleware(['guestOrVerified'])
     ->group(function () {
     Route::get('/products', [ProductController::class, 'index']);
     Route::post('/product/{product:id}', [ProductController::class, 'show']);
