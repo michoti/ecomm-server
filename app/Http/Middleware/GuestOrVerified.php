@@ -5,6 +5,7 @@ namespace App\Http\Middleware;
 use Closure;
 use Illuminate\Auth\Middleware\EnsureEmailIsVerified;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class GuestOrVerified extends EnsureEmailIsVerified
 {
@@ -20,7 +21,11 @@ class GuestOrVerified extends EnsureEmailIsVerified
         if(!$request->user())
         {
             return $next($request);
+
+            Log::info("Request passed although user is not authenticated");
         }
+
+        Log::info("Request passed although user authenticated");
 
         return parent::handle($request, $next, $redirectToRoute);
     }
